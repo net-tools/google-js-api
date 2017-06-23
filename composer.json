@@ -1,0 +1,21 @@
+{
+    "name" : "net-tools/google-js-api",
+	
+    "description" : "Composer library for Google API browser helpers (javascript)",
+	
+	"type": "library",
+	
+	"require" : {
+	},
+	
+    "license" : "MIT",
+
+    "authors": [
+        {
+            "name": "Pierre",
+            "email": "dev@net-tools.ovh",
+            "role": "Developer"
+        }
+    ]
+
+}
