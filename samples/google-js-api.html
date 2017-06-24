@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>com_ui tabs</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="google-js-api.css">
+   
+    <script src="../src/api/api.js"></script>
+    <script src="google-js-api.js"></script>
+
+    
+    <style>
+        
+        #map_canvas1,
+        #map_canvas2{
+            height:300px;
+            width:100%;
+        }
+        
+        div.flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        
+        div.flex > div {
+            width:45%;
+        }
+
+        div.flex > div > h1 {
+            margin-top:0;
+        }
+        
+        @media screen and (max-width:1024px) {
+            div.flex > div {
+                width:100%;
+            }
+
+        }
+        
+    </style>
+
+    
+    <script language="javascript">
+
+        
+    var test = {
+        
+        _mm1 : null,
+        _mm2 : null,
+        
+        
+        // initialize maps after API loaded
+        _apiMapsLoaded : function()
+        {
+            // create the Map Manager ; default values are provided for some options (such as map type) and may be overriden here
+            test._mm1 = new nettools.google.maps.MapManager("map_canvas1", {lat:45.763691, lng:3.119431}, 
+                                                    // options for google.maps.Map
+                                                    {
+                                                        // default zoom
+                                                        zoom: 11,
+
+                                                        // streetview widget on
+                                                        streetViewControl : true
+                                                    }
+                                                );
+            
+            
+            test._mm2 = new nettools.google.maps.MapManager("map_canvas2", {lat:45.763691, lng:3.119431}, 
+                                                    // options for google.maps.Map
+                                                    {
+                                                        // default zoom
+                                                        zoom: 2,
+
+                                                        // streetview widget on
+                                                        streetViewControl : false
+                                                    }
+                                                );
+        },
+        
+        
+        
+        // onload DOM event : load google maps API
+        onload : function()
+        {
+            // test api key already stored in browser
+            var key = null;
+            if ( key = window.localStorage.getItem('net-tools.google-js-api.apikey') )
+            {
+                document.forms[0].key.value = key;
+                nettools.google.APILoad("https://maps.google.com/maps/api/js?key=" + key, test._apiMapsLoaded);  
+            }
+        },
+        
+        
+        
+        // set api key
+        setKey : function(input)
+        {
+            window.localStorage.setItem('net-tools.google-js-api.apikey', input.value);
+            test.onload();
+        }, 
+        
+        
+        
+        // compute a route between two addresses
+        route : function(from, to)
+        {
+            if ( test._mm1 )
+                test._mm1.route(from, to, null, function(route){sample.output('Route computed !');}, function(error){sample.output('Error : ' + error);});
+        },
+        
+        
+        
+        // callback pour click event
+        markerClick : function()
+        {
+            sample.output('Marker clicked at lat,lng ' + this.title);
+        },
+        
+        
+        
+        // callback pour mousedown event
+        markerMouseDown : function()
+        {
+                sample.output('Marker right clicked at lat,lng ' + this.title);
+                var w = test._mm2.getInfoWindow();
+                w.setContent('Clicked ! ' + this.title);
+                w.open(test._mm2, this);
+        },
+        
+        
+        
+        // create a marker (string formatted as "lat,lng")
+        marker : function(city)
+        {
+            if ( test._mm2 )
+            {
+                var coord = city.split(',');
+                var m = test._mm2.createMarker({position:{lat:parseFloat(coord[0]), lng:parseFloat(coord[1])}, map:test._mm2.map, title:city});                
+                m.addListener('click', test.markerClick);
+                m.addListener('rightclick', test.markerMouseDown);
+            }
+        }
+        
+    }
+        
+        
+        
+    // autoload
+    window.addEventListener('load', test.onload, false);
+    </script>
+
+            
+</head>
+
+<body>
+    <div id="output"></div>
+    
+    <hr>
+    
+    <form>
+        <p><label>Google API key : <input type="text" size="45" name="key"></label> <input type="button" value="Set API key" onclick="test.setKey(this.form.key);"></p>
+    </form>
+    
+    <hr>
+    
+    <div class="flex">
+        <div class="sampleBox">
+            <h1>Maps - compute route</h1>
+            <form>
+                <p>
+                    <em>Directions Service must be enabled in Google Developer Console</em>
+                </p>
+                <p>
+                    <label>start zipcode : <input type="text" size="6" name="start"></label>
+                    <label>end zipcode : <input type="text" size="6" name="end"></label>
+                    <input type="submit" value="Go!" onclick="test.route(this.form.start.value, this.form.end.value); return false;">
+                </p>
+            </form>
+            <div id="map_canvas1"></div>
+        </div>
+
+        <div class="sampleBox">
+            <h1>Maps - create markers</h1>
+            <form>
+                <p>
+                    <select name="city">
+                        <option value="48.866667,2.333333">Paris</option>
+                        <option value="40.7142700,-74.0059700">New-York</option>
+                        <option value="51.5085300,-0.1257400">London</option>
+                    </select>
+                    <input type="submit" value="Go!" onclick="test.marker(this.form.city.value); return false;">
+                </p>
+            </form>
+            <div id="map_canvas2"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
