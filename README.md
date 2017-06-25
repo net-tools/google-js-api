@@ -29,7 +29,7 @@ First, create an object of `nettools.google.maps.MapManager` class ; required co
 - mapOpt : a litteral object with any of `google.maps.Map` available options (such as `mapTypeId`),
 - directionsRendererOpt : a litteral object with any of `google.maps.DirectionsRenderer` available options.
 
-```
+```javascript
 var mm = new nettools.google.maps.MapManager(
           // mapdiv
           "map_canvas2",
