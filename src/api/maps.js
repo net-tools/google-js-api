@@ -103,13 +103,13 @@ nettools.google.maps.MapManager = nettools.google.maps.MapManager || (function()
 		{
 			// backup default options so that they could be restored when raz() is called
 			this.options = {
-							map : nettools.google.mergeObjects({center: centerpoint, mapTypeId: google.maps.MapTypeId.ROADMAP}, mapOpt),
-							directionsRenderer : directionsRendererOpt
+							map : nettools.google.mergeObjects({center: centerpoint, mapTypeId: google.maps.MapTypeId.ROADMAP}, mapOpt || {}),
+							directionsRenderer : directionsRendererOpt || {}
 				};
 			
 			
 			// creating map with options ; creating empty markers array
-			this.map = new google.maps.Map(document.getElementById(mapdiv), this.options.map);
+			this.map = new google.maps.Map((typeof mapdiv == 'string')?document.getElementById(mapdiv):mapvid, this.options.map);
 			this.markers = new Array();
 			
 			
