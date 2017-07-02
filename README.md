@@ -12,7 +12,7 @@ This packages contains :
 
 To install net-tools/google-js-api package, just require it through composer and insert any script tag required in the `HEAD` section (replace `file.js` with any of the above packages) :
 ```
-<script src="/path_to_vendor/nettools/google-js-api/src/api/file.js"></script>
+<script src="/path_to_vendor/net-tools/google-js-api/src/api/file.js"></script>
 ```
 
 
