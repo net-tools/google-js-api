@@ -1,4 +1,7 @@
 'use strict';
+// compatibility test
+if ( typeof Object.prototype.bind !== 'function' )
+    alert('Browser not compliant with ECMASCRIPT 5 !');
 window.nettools=window.nettools||{};nettools.google=nettools.google||{APILoad:function(b,a){if(a&&"function"===typeof a){var d="_api_loaded"+Math.floor(1E6+1000001*Math.random());nettools.google[d]=a.bind(null,b)}else d="";var c=document.createElement("script");c.type="text/javascript";c.src=b+(d?"&callback=nettools.google."+d:"");document.body.appendChild(c)},mergeObjects:function(b,a){var d={};if(b)for(var c in b)d[c]=b[c];if(a)for(c in a)d[c]=a[c];return d}};
 nettools.google.maps=nettools.google.maps||{};
 nettools.google.maps.MapManager=nettools.google.maps.MapManager||function(){var b=null,a=null,d=null;return function(c,e,f,g){this.options={map:nettools.google.mergeObjects({center:e,mapTypeId:google.maps.MapTypeId.ROADMAP},f||{}),directionsRenderer:g||{}};this.map=new google.maps.Map("string"==typeof c?document.getElementById(c):mapvid,this.options.map);this.markers=[];this.raz=function(){for(var a=0;a<this.markers.length;a++)this.markers[a].setMap(null),this.markers[a]=null;this.markers.length=

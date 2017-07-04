@@ -1,7 +1,7 @@
 {
     "name" : "net-tools/google-js-api",
 	
-    "description" : "Composer library for Google API browser helpers (javascript)",
+    "description" : "Composer library for Google API browser helpers (javascript) ; ECMASCRIPT 5+ required",
 	
 	"type": "library",
 	
