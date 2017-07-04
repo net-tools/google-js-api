@@ -1,11 +1,6 @@
 'use strict';
 
 
-// compatibility test
-if ( typeof Object.prototype.bind !== 'function' )
-    alert('Browser not compliant with ECMASCRIPT 5 !');
-
-
 
 
 // namespace
@@ -27,7 +22,12 @@ nettools.google = nettools.google || {
         if ( cb && (typeof cb === 'function') )
         {
             var cbstr = '_api_loaded' + Math.floor(1000000 + (1+1000000-0)*Math.random());
-            nettools.google[cbstr] = cb.bind(null, url);   // set URL parameter as first callback parameter ; may be used to load several APIs at once
+
+            // compatibility test ECMASCRIPT 5
+            if ( typeof Function.prototype.bind !== 'function' )
+                nettools.google[cbstr] = function(){cb(url);};
+            else
+                nettools.google[cbstr] = cb.bind(null, url);   // set URL parameter as first callback parameter ; may be used to load several APIs at once
         }
         else
             var cbstr = '';
